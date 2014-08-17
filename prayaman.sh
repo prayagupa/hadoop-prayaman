@@ -241,41 +241,6 @@ sudo chmod -R 777 $MAPRED_PID_DIR
 sudo chown -R $MAPRED_USER:$HADOOP_GROUP $MAPRED_PID_DIR
 }
 
-configureHDFSdirs(){
-echo
-echo "#######################################################################"
-echo "[info] create dir history"
-echo "#######################################################################"
-hdfs dfs -mkdir -p /user/log/history
-## sudo -u hdfs hdfs dfs -mkdir -p /user/log/history       
-
-echo
-echo "#######################################################################"
-echo "[info] set permission to hostory"
-echo "#######################################################################"
-## sudo -u hdfs hdfs dfs -chmod -R 1777 /user/log/history  
-hdfs dfs -chmod -R 1777 /user/log/history
-
-echo 
-echo "#######################################################################"
-echo "[info] set permission to history (for mapred) "
-echo "#######################################################################"
-## sudo -u hdfs hdfs dfs -chown mapred:hadoop /user/log/history 
-hdfs dfs -chown mapred:hadoop /user/log/history
-
-echo
-echo "#######################################################################"
-echo "[info] create /tmp"
-echo "#######################################################################"
-## sudo -u hdfs hadoop fs -mkdir /tmp 
-hadoop fs -mkdir /tmp
-echo 
-echo "#######################################################################"
-echo "[info] set permission to /tmp"
-echo "#######################################################################"
-##sudo -u hdfs hadoop fs -chmod -R 1777 /tmp 
-hadoop fs -chmod -R 1777 /tmp
-}
 
 configureProtoc(){
 	sudo apt-get install -y gcc g++ make maven cmake zlib zlib1g-dev libcurl4-openssl-dev
@@ -312,14 +277,50 @@ configureHadoop(){
  cp -R ../hadoop-install/etc/hadoop/* $HADOOP_HOME/etc/hadoop/
 }
 
+configureHDFSdirs(){
+echo
+echo "#######################################################################"
+echo "[info] create dir history"
+echo "#######################################################################"
+hdfs dfs -mkdir -p /user/log/history
+## sudo -u hdfs hdfs dfs -mkdir -p /user/log/history       
+
+echo
+echo "#######################################################################"
+echo "[info] set permission to hostory"
+echo "#######################################################################"
+## sudo -u hdfs hdfs dfs -chmod -R 1777 /user/log/history  
+hdfs dfs -chmod -R 1777 /user/log/history
+
+echo 
+echo "#######################################################################"
+echo "[info] set permission to history (for mapred) "
+echo "#######################################################################"
+## sudo -u hdfs hdfs dfs -chown mapred:hadoop /user/log/history 
+hdfs dfs -chown mapred:hadoop /user/log/history
+
+echo
+echo "#######################################################################"
+echo "[info] create /tmp"
+echo "#######################################################################"
+## sudo -u hdfs hadoop fs -mkdir /tmp 
+hadoop fs -mkdir /tmp
+echo 
+echo "#######################################################################"
+echo "[info] set permission to /tmp"
+echo "#######################################################################"
+##sudo -u hdfs hadoop fs -chmod -R 1777 /tmp 
+hadoop fs -chmod -R 1777 /tmp
+}
+
 prayaman(){
-	installHadoop
-	prayamanJava
-	prayamanUsers
-	prayamanDirectories
-	configureProtoc
-	configureHadoopLib
-	#configureHDFSdirs
+	#installHadoop
+	#prayamanJava
+	#prayamanUsers
+	#prayamanDirectories
+	#configureProtoc
+	#configureHadoopLib
+	configureHDFSdirs
 	#configureHadoop
 }
 

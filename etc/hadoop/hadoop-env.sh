@@ -24,7 +24,7 @@
 # remote nodes.
 
 #################HADOOP###########################
-export HADOOP_HOME=/opt/hadoop-2.3.0-cdh5.0.1
+export HADOOP_HOME=/usr/local/hadoop-2.3.0-cdh5.0.1
 export HADOOP_MAPRED_HOME=$HADOOP_HOME
 export HADOOP_COMMON_HOME=$HADOOP_HOME
 export HADOOP_HDFS_HOME=$HADOOP_HOME
