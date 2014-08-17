@@ -20,7 +20,9 @@ export HADOOP_YARN_USER=${HADOOP_YARN_USER:-yarn}
 export YARN_CONF_DIR="${YARN_CONF_DIR:-$HADOOP_YARN_HOME/conf}"
 
 # some Java parameters
-# export JAVA_HOME=/home/y/libexec/jdk1.6.0/
+###############################################################
+export JAVA_HOME=/opt/jdk1.7.0_15
+
 if [ "$JAVA_HOME" != "" ]; then
   #echo "run java in $JAVA_HOME"
   JAVA_HOME=$JAVA_HOME
@@ -78,7 +80,10 @@ fi
 # so that filenames w/ spaces are handled correctly in loops below
 IFS=
 
-
+#####################################################################
+export YARN_LOG_DIR=/var/log/hadoop/yarn
+# PID Directory. Default /tmp
+export YARN_PID_DIR=/var/pid/hadoop/yarn
 # default log directory & file
 if [ "$YARN_LOG_DIR" = "" ]; then
   YARN_LOG_DIR="$HADOOP_YARN_HOME/logs"

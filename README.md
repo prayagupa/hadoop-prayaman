@@ -8,6 +8,10 @@ I tested it for `hadoop-2.2.0`. Hadoop installation steps at [programmer mattres
 ##TODO
 actual sh steps from this [gist](https://gist.github.com/prayagupd/8519289#file-hadoop_namenode_jobtracker_tasktracker-md)
 
+```bash
+./prayaman.sh
+```
+
 
 References
 [getting started with hadoop](https://gist.github.com/prayagupd/8519289#file-hadoop_namenode_jobtracker_tasktracker-md)
