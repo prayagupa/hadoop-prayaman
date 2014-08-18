@@ -254,15 +254,20 @@ configureProtoc(){
 }
 
 configureHadoopLib(){
-   #sudo apt-get install -y build-essential
-   #sudo apt-get install g++ autoconf automake
-   cd $HADOOP_HOME/src
+   sudo apt-get install -y build-essential
+   sudo apt-get install g++ autoconf automake
+   sudo apt-get install zlib1g-dev
+   sudo apt-get install libssl-dev
+   #wget http://apache.mirror.anlx.net/hadoop/core/hadoop-2.3.0/hadoop-2.3.0-src.tar.gz
+   #tar -zxvf hadoop-2.3.0-src.tar.gz
+   cd hadoop-2.3.0-src/
+   #cd $HADOOP_HOME/src
    echo
    echo "#######################################################################"
    echo "[INFO] Packaging hadoop source"
    echo "#######################################################################"
    #mvn package -Pdist,native -Dskiptests -Dtar
-   mvn package -Dmaven.javadoc.skip=true -Pdist,native -DskipTests -Dtar
+   mvn -e package -Dmaven.javadoc.skip=true -Pdist,native -DskipTests -Dtar
    echo
    echo "#######################################################################"
    echo "[INFO] Packaging hadoop source - completed"
@@ -319,8 +324,8 @@ prayaman(){
 	#prayamanUsers
 	#prayamanDirectories
 	#configureProtoc
-	#configureHadoopLib
-	configureHDFSdirs
+	configureHadoopLib
+	#configureHDFSdirs
 	#configureHadoop
 }
 
