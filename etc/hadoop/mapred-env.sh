@@ -14,7 +14,7 @@
 # limitations under the License.
 
 #########################################################
-export JAVA_HOME=/opt/jdk1.7.0_15
+export JAVA_HOME=$JAVA_HOME
 
 export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
 
