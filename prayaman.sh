@@ -46,15 +46,15 @@ echo
 echo "#######################################################################"
 echo "[info] Create hdfs user home dir"
 echo "#######################################################################"
-sudo mkdir -p /home/hdfs
-sudo chmod -R 700 /home/hdfs
-sudo chown -R hdfs:hadoop /home/hdfs
-cat << EOF | sudo -u hdfs ssh-keygen
+sudo mkdir -p /home/$HDFS_USER
+sudo chmod -R 700 /home/$HDFS_USER
+sudo chown -R $HDFS_USER:$HADOOP_GROUP /home/$HDFS_USER
+cat << EOF | sudo -u $HDFS_USER ssh-keygen
 
 
 
 EOF
-sudo -u hdfs sh -c "cat /home/hdfs/.ssh/id_rsa.pub >> /home/hdfs/.ssh/authorized_keys"
+sudo -u hdfs sh -c "cat /home/$HDFS_USER/.ssh/id_rsa.pub >> /home/$HDFS_USER/.ssh/authorized_keys"
 
 
 echo
@@ -66,15 +66,15 @@ echo
 echo "#######################################################################"
 echo "Create yarn user home dir"
 echo "#######################################################################"
-sudo mkdir -p /home/yarn
-sudo chmod -R 700 /home/yarn
-sudo chown -R yarn:hadoop /home/yarn
-cat << EOF | sudo -u yarn ssh-keygen
+sudo mkdir -p /home/$YARN_USER
+sudo chmod -R 700 /home/$YARN_USER
+sudo chown -R $YARN_USER:$HADOOP_GROUP /home/$YARN_USER
+cat << EOF | sudo -u $YARN_USER ssh-keygen
 
 
 
 EOF
-sudo -u yarn sh -c "cat /home/yarn/.ssh/id_rsa.pub >> /home/yarn/.ssh/authorized_keys"
+sudo -u yarn sh -c "cat /home/$YARN_USER/.ssh/id_rsa.pub >> /home/$YARN_USER/.ssh/authorized_keys"
 
 
 echo
@@ -86,15 +86,15 @@ echo
 echo "#######################################################################"
 echo "Create mapred user home dir"
 echo "#######################################################################"
-sudo mkdir -p /home/mapred
-sudo chmod -R 700 /home/mapred
-sudo chown -R mapred:hadoop /home/mapred
-cat << EOF | sudo -u mapred ssh-keygen
+sudo mkdir -p /home/$MAPRED_USER
+sudo chmod -R 700 /home/$MAPRED_USER
+sudo chown -R $MAPRED_USER:$HADOOP_GROUP /home/$MAPRED_USER
+cat << EOF | sudo -u $MAPRED_USER ssh-keygen
 
 
 
 EOF
-sudo -u mapred sh -c "cat /home/mapred/.ssh/id_rsa.pub >> /home/mapred/.ssh/authorized_keys"
+sudo -u mapred sh -c "cat /home/$MAPRED_USER/.ssh/id_rsa.pub >> /home/$MAPRED_USER/.ssh/authorized_keys"
 }
 
 prayamanJava(){
@@ -305,7 +305,7 @@ echo "#######################################################################"
 echo "[info] set permission to history (for mapred) "
 echo "#######################################################################"
 ## sudo -u hdfs hdfs dfs -chown mapred:hadoop /user/log/history 
-hdfs dfs -chown mapred:hadoop /user/log/history
+hdfs dfs -chown $MAPRED_USER:$HADOOP_GROUP /user/log/history
 
 echo
 echo "#######################################################################"
@@ -325,9 +325,9 @@ prayaman(){
 	#installHadoop
 	#prayamanJava
 	#prayamanUsers
-	#prayamanDirectories
+	prayamanDirectories
 	#configureProtoc
-	configureHadoopLib
+	#configureHadoopLib
 	#configureHDFSdirs
 	#configureHadoop
 }
