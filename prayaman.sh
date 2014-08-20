@@ -6,16 +6,16 @@
 #
 
 # User which will own the HDFS services.
-HDFS_USER=hdfs
+HDFS_USER=$USER ##CHANGEME
 
 # User which will own the YARN services.
-YARN_USER=yarn
+YARN_USER=$USER  ##CHANGEME
 
 # User which will own the MapReduce services.
-MAPRED_USER=mapred
+MAPRED_USER=$USER  ##CHANGEME
 
 # A common group shared by services.
-HADOOP_GROUP=hadoop
+HADOOP_GROUP=$USER
 
 installHadoop(){
  wget http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.3.0-cdh5.0.1.tar.gz
@@ -44,63 +44,61 @@ echo "#######################################################################"
 sudo useradd -G $HADOOP_GROUP $HDFS_USER
 echo
 echo "#######################################################################"
-echo "[info] Create hdfs user home dir"
+echo "[info] Create $HDFS_USER user home dir"
 echo "#######################################################################"
-sudo mkdir -p /home/$HDFS_USER
-sudo chmod -R 700 /home/$HDFS_USER
-sudo chown -R $HDFS_USER:$HADOOP_GROUP /home/$HDFS_USER
+sudo mkdir -p $HOME/$HDFS_USER
+sudo chmod -R 700 $HOME/$HDFS_USER
+sudo chown -R $HDFS_USER:$HADOOP_GROUP $HOME/$HDFS_USER
 cat << EOF | sudo -u $HDFS_USER ssh-keygen
 
-
-
 EOF
-sudo -u hdfs sh -c "cat /home/$HDFS_USER/.ssh/id_rsa.pub >> /home/$HDFS_USER/.ssh/authorized_keys"
+sudo -u $HDFS_USER sh -c "cat /home/$HDFS_USER/.ssh/id_rsa.pub >> /home/$HDFS_USER/.ssh/authorized_keys"
 
 
 echo
 echo "#######################################################################"
-echo "[info] Create user yarn"
+echo "[info] Create user $YARN_USER"
 echo "#######################################################################"
 sudo useradd -G $HADOOP_GROUP $YARN_USER
 echo
 echo "#######################################################################"
-echo "Create yarn user home dir"
+echo "Create $YARN_USER user home dir"
 echo "#######################################################################"
-sudo mkdir -p /home/$YARN_USER
-sudo chmod -R 700 /home/$YARN_USER
-sudo chown -R $YARN_USER:$HADOOP_GROUP /home/$YARN_USER
+sudo mkdir -p $HOME/$YARN_USER
+sudo chmod -R 700 $HOME/$YARN_USER
+sudo chown -R $YARN_USER:$HADOOP_GROUP $HOME/$YARN_USER
 cat << EOF | sudo -u $YARN_USER ssh-keygen
 
 
 
 EOF
-sudo -u yarn sh -c "cat /home/$YARN_USER/.ssh/id_rsa.pub >> /home/$YARN_USER/.ssh/authorized_keys"
+sudo -u $YARN_USER sh -c "cat /home/$YARN_USER/.ssh/id_rsa.pub >> /home/$YARN_USER/.ssh/authorized_keys"
 
 
 echo
 echo "#######################################################################"
-echo "[info] Create user mapred"
+echo "[info] Create user $MAPRED_USER"
 echo "#######################################################################"
 sudo useradd -G $HADOOP_GROUP $MAPRED_USER
 echo
 echo "#######################################################################"
 echo "Create mapred user home dir"
 echo "#######################################################################"
-sudo mkdir -p /home/$MAPRED_USER
-sudo chmod -R 700 /home/$MAPRED_USER
-sudo chown -R $MAPRED_USER:$HADOOP_GROUP /home/$MAPRED_USER
+sudo mkdir -p $HOME/$MAPRED_USER
+sudo chmod -R 700 $HOME/$MAPRED_USER
+sudo chown -R $MAPRED_USER:$HADOOP_GROUP $HOME/$MAPRED_USER
 cat << EOF | sudo -u $MAPRED_USER ssh-keygen
 
 
 
 EOF
-sudo -u mapred sh -c "cat /home/$MAPRED_USER/.ssh/id_rsa.pub >> /home/$MAPRED_USER/.ssh/authorized_keys"
+sudo -u $MAPRED_USER sh -c "cat $HOME/$MAPRED_USER/.ssh/id_rsa.pub >> $HOME/$MAPRED_USER/.ssh/authorized_keys"
 }
 
 prayamanJava(){
  # set same java home for all users
  JAVA_HOME="$JAVA_HOME" # get java home from current user's environment
- echo "[info] : Setting Java Home:> $JAVA_HOME"
+ echo "[INFO] : Setting JAVA HOME to '> $JAVA_HOME '"
  sudo sh -c "echo export JAVA_HOME=$JAVA_HOME > /etc/profile.d/java.sh"
  #To make sure JAVA_HOME is defined for this session, source the new script:
  source /etc/profile.d/java.sh 
@@ -321,15 +319,27 @@ echo "#######################################################################"
 hadoop fs -chmod -R 1777 /tmp
 }
 
+startHadoop(){
+#Start all hadoop daemons
+$HADOOP_HOME/sbin/start-dfs.sh
+$HADOOP_HOME/sbin/start-yarn.sh
+$HADOOP_HOME/sbin/mr-jobhistory-daemon.sh start historyserver
+$HADOOP_HOME/sbin/yarn-daemon.sh start proxyserver
+
+#Show started daemons
+#$JAVA_HOME/bin/jps
+}
+
 prayaman(){
 	#installHadoop
-	#prayamanJava
-	#prayamanUsers
-	prayamanDirectories
+	prayamanJava
+	prayamanUsers
+	#prayamanDirectories
 	#configureProtoc
 	#configureHadoopLib
 	#configureHDFSdirs
 	#configureHadoop
+	startHadoop
 }
 
 prayaman
